@@ -2,7 +2,7 @@
 var angularApp = angular.module('angularApp', []);
 
 // CONTROLLERS
-angularApp.controller('mainController', ['$scope', '$filter', function($scope, $filter) {
+angularApp.controller('mainController', ['$scope', '$filter', '$http', function($scope, $filter, $http) {
 
     $scope.handle = '';
 
@@ -12,21 +12,23 @@ angularApp.controller('mainController', ['$scope', '$filter', function($scope, $
 
     $scope.characters = 5;
 
-    $scope.rules = [
-        { rulename: "Must be 5 characters" },
-        { rulename: "Must not be used elsewhere" },
-        { rulename: "Must be cool" } 
-    ];
+    $http.get("https://dummyjson.com/comments")
+    .then(function(result) {
+        $scope.rules = result.data;
+    })
+    .catch(function (data, status) {
+        console.log(data);
+    });
 
-    var rulesrequest = new XMLHttpRequest();
-    rulesrequest.onreadystatechange = function () {
-        $scope.$apply(function() {
-            if(rulesrequest.readyState == 4 && rulesrequest.status == 200) {
-                $scope.rules = JSON.parse(rulesrequest.responseText)
-            }
+    $scope.newRule = '';
+    $scope.addRule = function() {
+        $http.post("/api", {newRule: $scope.newRule})
+        .then(function(result) {
+            $scope.rules = result.data;
+            $scope.newRule = '';
+        })
+        .catch(function (data, status) {
+            console.log(data);
         });
     }
-
-    rulesrequest.open("GET", "https://dummyjson.com/comments", true);
-    rulesrequest.send();
 }]);
