@@ -11,24 +11,40 @@ angularApp.config(function ($routeProvider) {
             templateUrl: 'pages/second.html',
             controller: 'secondController'
         })
-        .when('/second/:num', {
-            templateUrl: 'pages/second.html',
-            controller: 'secondController'
-        })
+        // .when('/second/:num', {
+        //     templateUrl: 'pages/second.html',
+        //     controller: 'secondController'
+        // })
         .otherwise({ redirectTo: '/' }); // Default route
 });
 
-// CONTROLLERS
-angularApp.controller('mainController', ['$scope', '$log', function($scope, $log) {
-    $scope.name = "John";
+angularApp.service('nameService', function() {
+    var self = this;
+    this.name = "John Doe";
 
-    $log.main = "Property from main";
-    $log.log($log);
+    this.namelength = function() {
+        return self.name.length;
+    }
+})
+
+// CONTROLLERS
+angularApp.controller('mainController', ['$scope', '$log', 'nameService', function($scope, $log, nameService) {
+    $scope.name = nameService.name;
+
+    $scope.$watch('name', function() {
+        nameService.name = $scope.name;
+    });
+
+    $log.log(nameService.name);
+    $log.log(nameService.namelength());
 }]);
 
-angularApp.controller('secondController', ['$scope', '$log', '$routeParams', function($scope, $log, $routeParams) {
+angularApp.controller('secondController', ['$scope', '$log', '$routeParams', 'nameService', 
+    function($scope, $log, $routeParams, nameService) {
+    $scope.name = nameService.name;
     $scope.num = $routeParams.num || 1;
 
-    $log.second = "Property from second";
-    $log.log($log);
+    $scope.$watch('name', function() {
+        nameService.name = $scope.name;
+    });
 }]);
