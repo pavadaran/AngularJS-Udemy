@@ -16,7 +16,10 @@ angularApp.config(function ($routeProvider) {
 
 // CONTROLLERS
 angularApp.controller('mainController', ['$scope', '$log', function($scope, $log) {
-
+    $scope.person = {
+        name: 'John Doe',
+        address: '555 Main St., New York, NY 11111'
+    }
 }]);
 
 angularApp.controller('secondController', ['$scope', '$log', '$routeParams',
@@ -30,6 +33,11 @@ angularApp.directive("searchResult", function() {
         // C -> Class
         // M -> Comment
         templateUrl: `directives/searchresult.html`,
-        replace: true
+        replace: true,
+        scope: {
+            // personNameSpecial: "@personName",
+            personName: "@", // Text
+            personAddress: "@"
+        }
     }
 })
