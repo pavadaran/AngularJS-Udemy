@@ -17,6 +17,7 @@
 
     <!-- load angular via CDN -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
     <script src="app.js"></script>
 </head>
 
@@ -30,7 +31,8 @@
                 </div>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="#!/"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="#!/second"><i></i> Second</a></li>
                 </ul>
             </div>
         </nav>
@@ -38,41 +40,7 @@
 
     <div class="container">
 
-        <div ng-controller="mainController">
-
-            <div>
-                <label>What is your twitter handle?</label>
-                <input type="text" ng-model="handle" />
-            </div>
-
-            <div class="alert" ng-class="{'alert-warning': handle.length < characters,
-            'alert-danger': handle.length > characters}"
-                ng-hide="handle.length === characters">
-                <div ng-show="handle.length < characters">
-                    You have less than 5 characters
-                </div>
-                <div ng-show="handle.length > characters">
-                    You have more than 5 characters
-                </div>
-            </div>
-
-            <hr />
- 
-            <h1>twitter.com/{{lowercasehandle()}}</h1>
-
-            <h3>Rules</h3>
-            <ul>
-                <li ng-repeat="rule in rules.comments">
-                    {{ rule.body }}
-                </li>
-            </ul>
-
-            <div>
-                Add rule: <input type="text" ng-model="newRule" />
-                <a href="#" class="btn btn-default" ng-click="addRule()">Add</a>
-            </div>
-
-        </div>
+        <div ng-view></div>
 
     </div>
 

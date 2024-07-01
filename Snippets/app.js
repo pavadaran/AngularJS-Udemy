@@ -1,34 +1,34 @@
 // MODULE
-var angularApp = angular.module('angularApp', []);
+var angularApp = angular.module('angularApp', ['ngRoute']);
+
+angularApp.config(function ($routeProvider) {
+    $routeProvider
+        .when('/', {
+            templateUrl: 'pages/main.html',
+            controller: 'mainController'
+        })
+        .when('/second', {
+            templateUrl: 'pages/second.html',
+            controller: 'secondController'
+        })
+        .when('/second/:num', {
+            templateUrl: 'pages/second.html',
+            controller: 'secondController'
+        })
+        .otherwise({ redirectTo: '/' }); // Default route
+});
 
 // CONTROLLERS
-angularApp.controller('mainController', ['$scope', '$filter', '$http', function($scope, $filter, $http) {
+angularApp.controller('mainController', ['$scope', '$log', function($scope, $log) {
+    $scope.name = "John";
 
-    $scope.handle = '';
+    $log.main = "Property from main";
+    $log.log($log);
+}]);
 
-    $scope.lowercasehandle = function() {
-        return $filter('lowercase')($scope.handle);
-    }
+angularApp.controller('secondController', ['$scope', '$log', '$routeParams', function($scope, $log, $routeParams) {
+    $scope.num = $routeParams.num || 1;
 
-    $scope.characters = 5;
-
-    $http.get("https://dummyjson.com/comments")
-    .then(function(result) {
-        $scope.rules = result.data;
-    })
-    .catch(function (data, status) {
-        console.log(data);
-    });
-
-    $scope.newRule = '';
-    $scope.addRule = function() {
-        $http.post("/api", {newRule: $scope.newRule})
-        .then(function(result) {
-            $scope.rules = result.data;
-            $scope.newRule = '';
-        })
-        .catch(function (data, status) {
-            console.log(data);
-        });
-    }
+    $log.second = "Property from second";
+    $log.log($log);
 }]);
