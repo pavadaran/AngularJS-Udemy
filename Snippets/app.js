@@ -61,28 +61,16 @@ angularApp.directive("searchResult", function() {
             personObject: "=",  // Two way binding
             formattedAddressFunction: "&" // Function
         },
-        compile: function(elem, attrs) {
-            console.log('Compilng...');
-            // elem.removeAttr('class');
-            console.log(elem);
+        link: function(scope, elements, attrs) {
+            console.log('Linking...');
+            console.log(scope);
 
-            return {
-                // pre: function(scope, elements, attrs) {
-                //     console.log('Pre-linking...');
-                //     console.log(elements);
-                // },
-
-                post: function(scope, elements, attrs) {
-                    console.log('Post-linking...');
-                    console.log(scope);
-
-                    if(scope.personObject.name == 'Jane Doe') {
-                        elements.removeAttr('class');
-                    }
-                    
-                    console.log(elements);
-                }
+            if(scope.personObject.name == 'Jane Doe') {
+                elements.removeAttr('class');
             }
-        }
+
+            console.log(elements);
+        },
+        transclude: true
     }
 })
